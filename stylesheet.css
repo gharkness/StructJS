@@ -1,0 +1,65 @@
+#wrap {
+    width:900px;
+    margin:0 auto;
+}
+
+#left_col {
+    float:left;
+    width:300px;
+}
+
+#right_col {
+    padding-left: 25px;
+    padding-top:110px;
+    float:right;
+    width:575px;
+}
+
+#removeSel {
+    max-width: 135px;
+    min-width: 135px;
+    width: 135px;
+}
+
+#edgeWeightTxt {
+    min-width: 40px;
+    max-width: 40px;
+    width: 40px;
+}
+
+#vertFromSel {
+    max-width: 60px;
+    min-width: 60px;
+    width: 60px;
+}
+
+#vertToSel {
+    max-width: 60px;
+    min-width: 60px;
+    width: 60px;
+}
+
+#myCanvas {
+    height: 490px;
+    border:1px solid #000000;
+    width: 575px;
+}
+
+#vertTxt {
+    min-width: 130px;
+    max-width: 130px;
+    width: 130px;
+}
+
+#vertSelCol {
+    float: left;
+    width: 140px;
+    padding-right: 10px;
+    /*background-color: blue;*/
+}
+
+#edgeSelCol {
+    float: right;
+    width: 140px;
+    /*background-color: red;*/
+}

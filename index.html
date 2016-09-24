@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+  </head>
+  <body>
+      <div id="wrap">
+              <div id="left_col">
+                  <div class="input-group">
+                     <input type="text" class="form-control" id="vertTxt">
+                     <span class="input-group-btn">
+                          <button class="btn btn-large btn-default" type="button" id="addVertBtn">Add Vertex</button>
+                     </span>
+                  </div>
+                  <br>
+                  <div class="input-group" id="removeVertDiv">
+                      <select name="removeSel" id="removeSel" class="dropdown">
+                      </select>
+                      <span class="input-group-btn">
+                          <button class="btn" type="button" id="removeBtn">Remove Vertex</button>
+                      </span>
+                  </div>
+                  <br>
+                  <div class="input-group" id="addEdgeDiv">
+                      <select name="vertFromSel" id="vertFromSel" class="dropdown">
+                      </select>
+                      <select name="vertToSel" id="vertToSel" class="dropdown">
+                      </select>
+                      <input type="text" class="form-control" id="edgeWeightTxt">
+                      <span class="input-group-btn">
+                          <button class="btn btn-large btn-default" type="button" id="addEdgeBtn">Add Edge</button>
+                      </span>
+                  </div>
+                  <br>
+                  <div class="input-group" id="selectDiv">
+                      <div id="vertSelCol">
+                          <select name="vertListSel" id="vertListSel" size="35">
+                          </select>
+                      </div>
+                      <div id="edgeSelCol">
+                          <select name="edgeListSel" id="edgeListSel" size="35">
+                          </select>
+                      </div>
+                  </div>
+              </div>
+              <div id="right_col">
+                  <canvas id="myCanvas">
+                  </canvas>
+              </div>
+          </div>
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+  </script>
+</html>
