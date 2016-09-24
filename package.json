@@ -5,8 +5,11 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . StructJS --platform=darwin --arch=x64 --version=1.2.0",
-    "package": "asar pack StructJS-darwin-x64/StructJS.app/Contents/Resources/app StructJS-darwin-x64/StructJS.app/Contents/Resources/app.asar"
+    "buildMac": "electron-packager . StructJS --platform=darwin --arch=x64 --icon='logo.icns' --version=1.2.0",
+    "buildWin": "electron-packager . StructJS --platform=win32 --arch=x64 --version=1.2.0",
+    "package": "asar pack StructJS-darwin-x64/StructJS.app/Contents/Resources/app StructJS-darwin-x64/StructJS.app/Contents/Resources/app.asar",
+    "cleanMac": "rm -rf ./StructJS-darwin-x64",
+    "cleanWin": "rm -rf ./StructJS-win32-x64"
   },
   "repository": {
     "type": "git",
