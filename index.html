@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script type="text/javascript" src="raphael.min.js"></script>
+    <script type="text/javascript" src="rTest.js"></script>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>StructJS</title>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
   </head>
   <body>
       <div id="wrap">
               <div id="left_col">
-                  <div class="input-group">
+                  <div class="input-group" id="input-group">
                      <input type="text" class="form-control" id="vertTxt">
                      <span class="input-group-btn">
                           <button class="btn btn-large btn-default" type="button" id="addVertBtn">Add Vertex</button>
@@ -45,15 +48,12 @@
                       </div>
                   </div>
               </div>
-              <div id="right_col">
-                  <canvas id="myCanvas">
-                  </canvas>
-              </div>
           </div>
   </body>
 
   <script>
     // You can also require other files to run in this process
     require('./renderer.js')
+
   </script>
 </html>
