@@ -57,9 +57,10 @@ $(document).ready(function(){
 
           var fromNode = $("#wrap #left_col  #addEdgeDiv #vertFromSel :selected").text();
           var toNode =  $("#wrap #left_col  #addEdgeDiv #vertToSel :selected").text();
-          if(fromNode != toNode) {
+          if(fromNode.localeCompare(toNode) != 0) {
             //pass to handler function
             alert(weight + " " + fromNode + " "+ toNode);
+            addEdge(fromNode, toNode, weight);
           } else {
             alert("edges must be made between two different nodes" + " " + fromNode + " "+ toNode);
           }
@@ -87,18 +88,13 @@ function addVert(text, vertexVal, paper){
     text : text
   }));
 
-  // $('#wrap #left_col #selectDiv #vertListSel').append($('<option/>', {
-  //   value: vertexVal,
-  //   text : text
-  // }));
-
   //testing filling board with circles and drawing line
   if (x < 550){
-    var circle = addNewCircle(x, y, r, paper);
+    var circle = addNewCircle(x, y, r, text, paper);
     x += 125;
   }
   else if (y < 550){
-    var circle = addNewCircle(x, y, r, paper);
+    var circle = addNewCircle(x, y, r, text, paper);
     x = 50
     y += 125;
   } else {
@@ -122,6 +118,18 @@ function removeVert(vertToRemove){
 
 function addEdge(fromNode, toNode, weight){
 
+  var selectString = fromNode + " --------- " + toNode;
+
+  $('#wrap #left_col #selectDiv #vertListSel').append($('<option/>', {
+    value: fromNode + toNode,
+    text : selectString
+  }));
+
+  $('#wrap #left_col #selectDiv #edgeListSel').append($('<option/>', {
+    value: fromNode + toNode,
+    text : weight
+  }));
+
 
 }
 
@@ -139,16 +147,24 @@ function initOutline(x_End, y_End, paper){
 }
 
 
-function addNewCircle(x,y,r,paper){
-  // Creates circle at x = 50, y = 40, with radius 10
-  var circle = paper.circle(x, y, r);
-  // Sets the fill attribute of the circle to red (#f00)
-  circle.attr("fill", "#f00");
+function addNewCircle(x,y,r,text,paper){
+  var setText = "";
+  //shorten text if user inputs long node name
+  if(text.length > 10){
+    setText = text.substring(0,10);
+  } else {
+    setText = text;
+  }
+  // Create a set that includes a circle with text on it
+  paper.setStart();
+  paper.circle(x, y, r)
+       .attr("fill", "#f00")
+       .attr("stroke", "green");
+  paper.text(x,y, setText)
+       .attr("fill", "white");
+  var circleSet = paper.setFinish();
 
-  // Sets the stroke attribute of the circle to white
-  circle.attr("stroke", "green");
-
-  return circle;
+  return circleSet;
 }
 
 function drawLine(x1, y1, x2, y2, paper, color) {
