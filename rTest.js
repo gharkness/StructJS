@@ -148,6 +148,16 @@ function addNewCircle(x,y,r,paper){
   // Sets the stroke attribute of the circle to white
   circle.attr("stroke", "green");
 
+  var start = function() {
+    this.ox = this.attr("cx");
+    this.oy = this.attr("cy");
+  },
+  move = function(dx,dy) {
+    this.attr({cx:this.ox + dx, cy: this.oy + dy});
+  }
+ 
+  circle.drag(move, start);
+
   return circle;
 }
 
