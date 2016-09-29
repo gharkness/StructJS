@@ -31,19 +31,29 @@
                       </select>
                       <select name="vertToSel" id="vertToSel" class="dropdown">
                       </select>
-                      <input type="text" class="form-control" id="edgeWeightTxt">
+                      <input type="text" class="form-control" id="edgeWeightTxt" >
                       <span class="input-group-btn">
                           <button class="btn btn-large btn-default" type="button" id="addEdgeBtn">Add Edge</button>
                       </span>
                   </div>
                   <br>
+                  <div class="input-group" id="dijkstra">
+                      <select name="vertFromSel" id="beginVert" class="dropdown">
+                      </select>
+                      <select name="vertToSel" id="endVert" class="dropdown">
+                      </select>
+                      <span class="input-group-btn">
+                          <button class="btn btn-large btn-default" type="button" id="dijkstraBtn">Run Dijkstra</button>
+                      </span>
+                  </div>
+                  <br>
                   <div class="input-group" id="selectDiv">
                       <div id="vertSelCol">
-                          <select name="vertListSel" id="vertListSel" size="35">
+                          <select name="vertListSel" id="vertListSel" size="30">
                           </select>
                       </div>
                       <div id="edgeSelCol">
-                          <select name="edgeListSel" id="edgeListSel" size="35">
+                          <select name="edgeListSel" id="edgeListSel" size="30">
                           </select>
                       </div>
                   </div>

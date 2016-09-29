@@ -1,36 +1,39 @@
+var x = 50;
+var y = 50;
+var r = 30;
+
+
 $(document).ready(function(){
 
   //borders for paper
-  var x_0 = 365;
-  var y_0 = 114;
-  var x_End = 580;
-  var y_End = 495;
+  var x_0 = 350;
+  var y_0 = 10;
+  var x_End = 600;
+  var y_End = 600;
+
+  var g = new Graph();
 
 
   var paper = Raphael(x_0, y_0, x_End, y_End);
 
   initOutline(x_End, y_End, paper);
 
-  var x = 50;
-  var y = 50;
-  var r = 40;
-
-  var circle = addNewCircle(x, y, r, paper);
-
-  var g = new Graph();
+  // var circle = addNewCircle(x, y, r, paper);
 
   var vertexVal = 1;
 
-  //var verticies = [];
+  var vertices = new Array();
 
   //add Vertex button
   $("#wrap #left_col #input-group #addVertBtn").click( function() {
 
     var text = $("#wrap #left_col #input-group #vertTxt").val();
 
+    //alert(text);
+
     if(text.length > 0 && text != null){
-      addVert(text, vertexVal);
-      g.addVertex(te)
+      vertices.push(addVert(text, vertexVal, paper));
+      //g.addVertex(text);
       vertexVal++;
     }
   });
@@ -40,7 +43,7 @@ $(document).ready(function(){
       //TODO remove verticies and handle all repurcussions of this
       var vertToRemove = $('#wrap #left_col #removeVertDiv #removeSel').val();
       if(vertToRemove != null){
-
+          removeVert(vertToRemove);
       }
   });
 
@@ -48,15 +51,27 @@ $(document).ready(function(){
   //add edge button
   $("#wrap #left_col  #addEdgeDiv #addEdgeBtn").click( function() {
       //TODO add weights and draw connextions between nodes
+      //var alphaNum= /[^0-9]/i;
+      var weight = $("#wrap #left_col  #addEdgeDiv #edgeWeightTxt").val();
+      if(weight != null && weight.length > 0 && !weight.match(/[^0-9]/i) ){
 
+          var fromNode = $("#wrap #left_col  #addEdgeDiv #vertFromSel :selected").text();
+          var toNode =  $("#wrap #left_col  #addEdgeDiv #vertToSel :selected").text();
+          if(fromNode != toNode) {
+            //pass to handler function
+            alert(weight + " " + fromNode + " "+ toNode);
+          } else {
+            alert("edges must be made between two different nodes" + " " + fromNode + " "+ toNode);
+          }
+      } else {
+        //TODO tell user to input num  with focus?
+        alert("Enter number");
+      }
   });
-
-
-
 
 });
 
-function addVert(text, vertexVal){
+function addVert(text, vertexVal, paper){
   $('#wrap #left_col #removeVertDiv #removeSel').append($('<option/>', {
     value: vertexVal,
     text : text
@@ -72,10 +87,42 @@ function addVert(text, vertexVal){
     text : text
   }));
 
-  $('#wrap #left_col #selectDiv #vertListSel').append($('<option/>', {
-    value: vertexVal,
-    text : text
-  }));
+  // $('#wrap #left_col #selectDiv #vertListSel').append($('<option/>', {
+  //   value: vertexVal,
+  //   text : text
+  // }));
+
+  //testing filling board with circles and drawing line
+  if (x < 550){
+    var circle = addNewCircle(x, y, r, paper);
+    x += 125;
+  }
+  else if (y < 550){
+    var circle = addNewCircle(x, y, r, paper);
+    x = 50
+    y += 125;
+  } else {
+    alert("Display full " + x + " " + y);
+    drawLine(50, 50, 175, 300, paper, "green");
+  }
+  return circle;
+}
+
+function removeVert(vertToRemove){
+  var rmRemoveSel = '#wrap #left_col #removeVertDiv #removeSel option[value=' + vertToRemove + ']';
+  var rmRemoveFrom  = '#wrap #left_col #addEdgeDiv #vertFromSel option[value=' + vertToRemove + ']';
+  var rmRemoveTo  = '#wrap #left_col #addEdgeDiv #vertToSel option[value=' + vertToRemove + ']';
+
+  $(rmRemoveSel).remove();
+  $(rmRemoveFrom).remove();
+  $(rmRemoveTo).remove();
+
+  //handle remove from tracked vertices
+}
+
+function addEdge(fromNode, toNode, weight){
+
+
 }
 
 function Vertex() {
