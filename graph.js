@@ -116,7 +116,7 @@ g.addVertex('E', {H: 1});
 g.addVertex('F', {B: 2, C: 6, D: 8, G: 9, H: 3});
 g.addVertex('G', {C: 4, F: 9});
 g.addVertex('H', {E: 1, F: 3});
-
+g.addVertex('Z');
 
 // Log test, with the addition of reversing the path and prepending the first node so it's more readable
-console.log(g.dijkstra('A', 'H').concat(['A']).reverse());
+console.log(g.dijkstra('A', 'Z').concat(['A']).reverse());

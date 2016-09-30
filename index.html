@@ -4,6 +4,7 @@
     <script>window.$ = window.jQuery = require('jquery');</script>
     <script type="text/javascript" src="raphael.min.js"></script>
     <script type="text/javascript" src="rTest.js"></script>
+    <script type="text/javascript" src="raphael.draggable.js"></script>
     <meta charset="UTF-8">
     <title>StructJS</title>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
@@ -38,9 +39,9 @@
                   </div>
                   <br>
                   <div class="input-group" id="dijkstra">
-                      <select name="vertFromSel" id="beginVert" class="dropdown">
+                      <select name="begin" id="beginPath" class="dropdown">
                       </select>
-                      <select name="vertToSel" id="endVert" class="dropdown">
+                      <select name="end" id="endPath" class="dropdown">
                       </select>
                       <span class="input-group-btn">
                           <button class="btn btn-large btn-default" type="button" id="dijkstraBtn">Run Dijkstra</button>

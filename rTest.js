@@ -11,10 +11,10 @@ $(document).ready(function(){
   var x_End = 600;
   var y_End = 600;
 
-  var g = new Graph();
+  g = new Graph();
 
 
-  var paper = Raphael(x_0, y_0, x_End, y_End);
+  paper = Raphael(x_0, y_0, x_End, y_End);
 
   initOutline(x_End, y_End, paper);
 
@@ -24,16 +24,23 @@ $(document).ready(function(){
 
   var vertices = new Array();
 
+  var vertMap = {};
+
+  var mapToCircles = {};
+
+  edgesFrom = {};
+
   //add Vertex button
   $("#wrap #left_col #input-group #addVertBtn").click( function() {
 
     var text = $("#wrap #left_col #input-group #vertTxt").val();
 
-    //alert(text);
-
     if(text.length > 0 && text != null){
-      vertices.push(addVert(text, vertexVal, paper));
-      //g.addVertex(text);
+      vertices.push(addVert(text, vertexVal, paper, mapToCircles));
+      //addVertex(text, vertexVal, paper);
+      //addVert(text, vertexVal, paper);
+      g.addVertex(text);
+      vertMap[text] = g.getVertex(text);
       vertexVal++;
     }
   });
@@ -42,6 +49,8 @@ $(document).ready(function(){
   $("#wrap #left_col #removeVertDiv #removeBtn").click( function() {
       //TODO remove verticies and handle all repurcussions of this
       var vertToRemove = $('#wrap #left_col #removeVertDiv #removeSel').val();
+      var label = $('#wrap #left_col #removeVertDiv #removeSel :selected').text();
+    
       if(vertToRemove != null){
           removeVert(vertToRemove);
       }
@@ -59,8 +68,14 @@ $(document).ready(function(){
           var toNode =  $("#wrap #left_col  #addEdgeDiv #vertToSel :selected").text();
           if(fromNode.localeCompare(toNode) != 0) {
             //pass to handler function
-            alert(weight + " " + fromNode + " "+ toNode);
-            addEdge(fromNode, toNode, weight);
+            //alert(weight + " " + fromNode + " "+ toNode);
+            //addEdge(fromNode, toNode, weight, edgesFrom);
+            var line = drawLine(mapToCircles[fromNode].attr("cx"), mapToCircles[fromNode].attr("cy"), mapToCircles[toNode].attr("cx"), mapToCircles[toNode].attr("cy"), paper, "black");
+            addEdge(fromNode, toNode, weight, edgesFrom, line);
+            g.addEdge(fromNode, toNode, weight);
+            mapToCircles[fromNode].undrag();
+            mapToCircles[toNode].undrag();
+            line.toBack();
           } else {
             alert("edges must be made between two different nodes" + " " + fromNode + " "+ toNode);
           }
@@ -70,9 +85,44 @@ $(document).ready(function(){
       }
   });
 
+  $("#wrap #left_col #dijkstra #dijkstraBtn").click(function() {
+    var src = $('#wrap #left_col #dijkstra #beginPath :selected').text();
+    var dest = $('#wrap #left_col #dijkstra #endPath :selected').text();
+
+    //var path = g.dijkstra(src, dest).concat([src]).reverse();
+
+    console.log(g.dijkstra(src,dest));
+
+    console.log(path);
+    var path = g.dijkstra(src, dest);
+    path.push(src);
+
+   //if (src === dest) return;
+
+    if (path.length >= 2) {
+        var cur;
+        for (var i = 0; i < path.length - 1; i++) {
+            drawLine(mapToCircles[path[i]].attr("cx"), mapToCircles[path[i]].attr("cy"), mapToCircles[path[i+1]].attr("cx"), mapToCircles[path[i+1]].attr("cy"), paper, "green");
+                   
+        }
+        //drawLine(mapToCirles[path[i-1]].attr("cx"), mapToCircles[path[i-1]].attr("cy"), mapToCircles[src].attr("cx"), path)
+    } 
+  });
+
 });
 
-function addVert(text, vertexVal, paper){
+function addVert(text, vertexVal, paper, map){
+
+  $('#wrap #left_col #dijkstra #beginPath').append($('<option/>', {
+    value: vertexVal,
+    text: text
+  }));
+
+  $('#wrap #left_col #dijkstra #endPath').append($('<option/>', {
+      value: vertexVal,
+      text: text
+    }));
+
   $('#wrap #left_col #removeVertDiv #removeSel').append($('<option/>', {
     value: vertexVal,
     text : text
@@ -91,10 +141,13 @@ function addVert(text, vertexVal, paper){
   //testing filling board with circles and drawing line
   if (x < 550){
     var circle = addNewCircle(x, y, r, paper);
+    map[text] = circle;
     x += 125;
   }
   else if (y < 550){
     var circle = addNewCircle(x, y, r, paper);
+    alert(text + " Type: " + typeof text);
+    map[text] = circle;
     x = 50
     y += 125;
   } else {
@@ -105,6 +158,7 @@ function addVert(text, vertexVal, paper){
 }
 
 function removeVert(vertToRemove){
+
   var rmRemoveSel = '#wrap #left_col #removeVertDiv #removeSel option[value=' + vertToRemove + ']';
   var rmRemoveFrom  = '#wrap #left_col #addEdgeDiv #vertFromSel option[value=' + vertToRemove + ']';
   var rmRemoveTo  = '#wrap #left_col #addEdgeDiv #vertToSel option[value=' + vertToRemove + ']';
@@ -116,7 +170,7 @@ function removeVert(vertToRemove){
   //handle remove from tracked vertices
 }
 
-function addEdge(fromNode, toNode, weight){
+function addEdge(fromNode, toNode, weight, map, line){
 
   var selectString = fromNode + " --------- " + toNode;
 
@@ -130,6 +184,8 @@ function addEdge(fromNode, toNode, weight){
     text : weight
   }));
 
+  map[fromNode] = line;
+  map[toNode] = line;
 
 }
 
@@ -151,6 +207,7 @@ function initOutline(x_End, y_End, paper){
 function addNewCircle(x,y,r,paper){
   // Creates circle at x = 50, y = 40, with radius 10
   var circle = paper.circle(x, y, r);
+
   // Sets the fill attribute of the circle to red (#f00)
   circle.attr("fill", "#f00");
 
@@ -159,7 +216,6 @@ function addNewCircle(x,y,r,paper){
 
   // Sets the stroke attribute of the circle to white
   circle.attr("stroke", "green");
-
 
   var start = function() {
     this.ox = this.attr("cx");
@@ -183,7 +239,7 @@ function drawLine(x1, y1, x2, y2, paper, color) {
   //move to x1,y1, line to x2, y2
   var path_string = "M" + x1 + " " + y1 + "L" + x2 + " " + y2;
 
-  var line = paper.path(path_string);
+  var line = this.paper.path(path_string);
   line.attr("stroke", color);
   line.attr("stroke-width", 10);
 
@@ -235,6 +291,16 @@ function Graph() {
         } else {
             this.vertices[label] = edgeSet;
         }
+    }
+
+    this.getVertex = function(label) {
+        if (this.vertices[label] != null) return this.vertices[label];
+        else return;
+    }
+
+    this.getNeighbors = function(label) {
+        if (this.vertices[label] === null) return;
+        else return this.vertices[label];
     }
 
     this.addEdge = function(from,to,weight) {
