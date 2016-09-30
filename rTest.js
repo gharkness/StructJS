@@ -145,8 +145,20 @@ function addNewCircle(x,y,r,paper){
   // Sets the fill attribute of the circle to red (#f00)
   circle.attr("fill", "#f00");
 
+  //var circleSet = paper.set();
+  //var label = paper.text(x,y, "label").attr({fill: 'white'});
+
   // Sets the stroke attribute of the circle to white
   circle.attr("stroke", "green");
+
+  //paper.setStart();
+  //paper.circle(x, y, r)
+  //     .attr("fill", "#f00")
+  //     .attr("stroke", "green");
+  // paper.text(x,y,"label")
+  //     .attr("fill", "white");
+
+  //var circleSet = paper.setFinish();
 
   var start = function() {
     this.ox = this.attr("cx");
@@ -154,11 +166,49 @@ function addNewCircle(x,y,r,paper){
   },
   move = function(dx,dy) {
     this.attr({cx:this.ox + dx, cy: this.oy + dy});
+    this.attr({opacity: 0.5});
+  },
+  end = function() {
+    this.attr({opacity: 1});
   }
  
-  circle.drag(move, start);
+  circle.drag(move, start, end);
 
-  return circle;
+  //label.drag(move,start,end);
+
+  //circleSet.drag(move,start,end);
+
+  //var circle = paper.circle(x, y, r);
+  //circle.attr({"fill": "#f00"});
+
+  //var label = paper.text(x, y, "label");
+
+  //var dragger = function() {
+  //  this.ox = this.type == "circle" ? this.attr("x") : this.attr("cx");
+  //  this.oy = this.type == "circle" ? this.attr("y") : this.attr("cy");
+  //  this.animate({
+  //      "fill-opacity": 2
+  //  }, 500);
+  //}
+
+  //var move = function() {
+  //  var mx = this.ox + x;
+  //  var my = this.oy + y;
+
+  //  var att = this.type == "rect" ? {
+  //      x: mx,
+  //      y: my
+  //  } : {
+  //      cx: mx,
+  //      cy: my
+  //  };
+
+  //  this.attr(att);
+
+     
+  //}
+
+  return circleSet;
 }
 
 function drawLine(x1, y1, x2, y2, paper, color) {
