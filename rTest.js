@@ -90,11 +90,11 @@ function addVert(text, vertexVal, paper){
 
   //testing filling board with circles and drawing line
   if (x < 550){
-    var circle = addNewCircle(x, y, r, text, paper);
+    var circle = addNewCircle(x, y, r, paper);
     x += 125;
   }
   else if (y < 550){
-    var circle = addNewCircle(x, y, r, text, paper);
+    var circle = addNewCircle(x, y, r, paper);
     x = 50
     y += 125;
   } else {
@@ -147,24 +147,35 @@ function initOutline(x_End, y_End, paper){
 }
 
 
-function addNewCircle(x,y,r,text,paper){
-  var setText = "";
-  //shorten text if user inputs long node name
-  if(text.length > 10){
-    setText = text.substring(0,10);
-  } else {
-    setText = text;
-  }
-  // Create a set that includes a circle with text on it
-  paper.setStart();
-  paper.circle(x, y, r)
-       .attr("fill", "#f00")
-       .attr("stroke", "green");
-  paper.text(x,y, setText)
-       .attr("fill", "white");
-  var circleSet = paper.setFinish();
 
-  return circleSet;
+function addNewCircle(x,y,r,paper){
+  // Creates circle at x = 50, y = 40, with radius 10
+  var circle = paper.circle(x, y, r);
+  // Sets the fill attribute of the circle to red (#f00)
+  circle.attr("fill", "#f00");
+
+  //var circleSet = paper.set();
+  //var label = paper.text(x,y, "label").attr({fill: 'white'});
+
+  // Sets the stroke attribute of the circle to white
+  circle.attr("stroke", "green");
+
+
+  var start = function() {
+    this.ox = this.attr("cx");
+    this.oy = this.attr("cy");
+  },
+  move = function(dx,dy) {
+    this.attr({cx:this.ox + dx, cy: this.oy + dy});
+    this.attr({opacity: 0.5});
+  },
+  end = function() {
+    this.attr({opacity: 1});
+  }
+
+  circle.drag(move, start, end);
+
+  return circle;
 }
 
 function drawLine(x1, y1, x2, y2, paper, color) {
